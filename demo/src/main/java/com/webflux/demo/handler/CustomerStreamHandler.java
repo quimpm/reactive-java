@@ -23,4 +23,17 @@ public class CustomerStreamHandler {
                 .body(customersStream, Customer.class);
     }
 
+    public Mono<ServerResponse> findCostumer (ServerRequest request){
+        int customerId = Integer.valueOf(request.pathVariable("id"));
+        Mono<Customer> customerMono = customerDao.getCustomersList().filter(c -> c.getId() == customerId).next();
+        return ServerResponse.ok().body(customerMono, Customer.class);
+    }
+
+    public Mono<ServerResponse> saveCostumer(ServerRequest request){
+        Mono<Customer> customerMono = request.bodyToMono(Customer.class);
+        Mono<String> customerString = customerMono.map(dto -> dto.getId()+" : "+dto.getName());
+        return ServerResponse.ok().body(customerString, String.class);
+
+    }
+
 }

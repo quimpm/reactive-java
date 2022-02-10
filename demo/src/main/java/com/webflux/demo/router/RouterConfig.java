@@ -14,6 +14,7 @@ public class RouterConfig {
 
     @Autowired
     private CustomerHandler handler;
+
     @Autowired
     private CustomerStreamHandler streamHandler;
 
@@ -22,6 +23,8 @@ public class RouterConfig {
         return RouterFunctions.route()
                 .GET("router/costumers", handler::loadCustomers)
                 .GET("router/costumers/stream", streamHandler::getCostumers)
+                .GET("router/costumers/{id}", streamHandler::findCostumer)
+                .POST("router/costumers/save", streamHandler::saveCostumer)
                 .build();
     }
 
